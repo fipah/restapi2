@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row target">
+
+        </div>
+    </div>
+    <script>
+        loadContent();
+        function loadContent(){
+            const request = new XMLHttpRequest();
+
+            request.onreadystatechange = function() {
+                if (this.readyState === request.DONE && this.status == 200) {
+                    let items = JSON.parse(request.responseText);
+                    for(let i = 0; items.length;i++){
+                        let htmlCode = "";
+                        const target = document.querySelector('.target');
+                        htmlCode = htmlCode + "<div class='card'>";
+                        htmlCode = htmlCode + "<h4 class='card-title'>" + items[i].name + "</h4>";
+                        htmlCode = htmlCode + "<h4 class='card-title'>" + items[i].price + "</h4>";
+                        htmlCode = htmlCode + "<h4 class='card-title'>" + items[i].amount + "</h4>";
+                        htmlCode = htmlCode + `<a class='btn btn-primary' href='/item/details/${items[i].id}'>DETAILS</a>`;
+                        htmlCode = htmlCode + "</div>";
+                        let newDiv = document.createElement('div');
+                        newDiv.innerHTML = htmlCode;
+                        target.append(newDiv);
+                    }
+                }
+            };
+            request.open("GET", "/api");
+            request.send();
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
